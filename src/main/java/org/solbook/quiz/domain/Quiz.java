@@ -10,11 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import lombok.Getter;
+import org.solbook.common.auditing.BaseEntity;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Entity
-public abstract class Quiz {
+public abstract class Quiz extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
