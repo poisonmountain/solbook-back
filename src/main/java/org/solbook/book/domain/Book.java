@@ -1,20 +1,19 @@
 package org.solbook.book.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.solbook.common.auditing.BaseEntity;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"title", "author"}))
 public class Book extends BaseEntity {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
 
     @Column(nullable = false)
@@ -25,4 +24,11 @@ public class Book extends BaseEntity {
 
     @Column(nullable = false)
     private String image;
+
+    @Builder
+    public Book(String title, String author, String image){
+        this.title = title;
+        this.author = author;
+        this.image = image;
+    }
 }
