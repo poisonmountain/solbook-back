@@ -3,6 +3,7 @@ package org.solbook.book.service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.solbook.book.controller.request.BookRequest;
+import org.solbook.book.controller.response.BookResponse;
 import org.solbook.book.domain.Book;
 import org.solbook.book.repository.BookRepository;
 import org.solbook.common.exception.BookException;
@@ -24,8 +25,22 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    public BookResponse getBook(Long bookId) {
+        Book book = getBookById(bookId);
+        return BookResponse.builder()
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .image(book.getImage())
+                .build();
+    }
+
     private boolean checkBookExist(String title, String author){
         return bookRepository.existsByTitleAndAuthor(title, author);
+    }
+
+    private Book getBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow(() ->
+                new BookException(ExceptionMessage.BOOK_NOT_FOUND));
     }
 
 }
