@@ -27,4 +27,12 @@ public abstract class Quiz extends BaseEntity {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
+    protected Quiz() {
+    }
+
+    protected Quiz(String question, QuizType quizType) {
+        this.question = question;
+        this.quizType = quizType;
+    }
+
 }
