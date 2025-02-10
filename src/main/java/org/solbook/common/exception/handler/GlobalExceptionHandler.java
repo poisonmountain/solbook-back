@@ -1,6 +1,7 @@
 package org.solbook.common.exception.handler;
 
 import org.solbook.common.response.JsonResult;
+import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,7 @@ public class GlobalExceptionHandler {
     public JsonResult bindException(BindException e) {
         String errorMessage = getErrorMessage(e.getBindingResult());
 
-        return JsonResult.failOf(errorMessage);
+        return JsonResult.failOf(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
     /*
@@ -29,20 +30,20 @@ public class GlobalExceptionHandler {
     public JsonResult handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         String errorMessage = getErrorMessage(e.getBindingResult());
 
-        return JsonResult.failOf(errorMessage);
+        return JsonResult.failOf(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
     // 낙관적 락에 의해 동시성 충돌이 발생해 ObjectOptimisticLockingFailureException 예외가 터졌을 경우
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public JsonResult handleObjectOptimisticLockingFailureException(ObjectOptimisticLockingFailureException e) {
 
-        return JsonResult.failOf(e.getMessage());
+        return JsonResult.failOf(HttpStatus.CONFLICT, e.getMessage());
     }
 
 
     @ExceptionHandler(Exception.class)
     public JsonResult<Exception> exception(Exception e) {
-        return JsonResult.failOf(e.getMessage());
+        return JsonResult.failOf(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     private static String getErrorMessage(BindingResult e) {

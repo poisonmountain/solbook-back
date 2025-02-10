@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.solbook.common.response.JsonResult;
 import org.solbook.quiz.controller.request.MultipleChoiceQuizRequest;
 import org.solbook.quiz.controller.request.SubjectiveQuizRequest;
+import org.solbook.quiz.controller.response.QuizResponse;
 import org.solbook.quiz.service.QuizService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/quiz")
@@ -29,4 +27,9 @@ public class QuizController {
         return JsonResult.successOf();
     }
 
+    @GetMapping("/{quizId}")
+    public JsonResult<?> getQuiz(@PathVariable("quizId") Long quizId) {
+        QuizResponse quizResponse = quizService.getQuiz(quizId);
+        return JsonResult.successOf(quizResponse);
+    }
 }
