@@ -32,6 +32,33 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    implementation 'com.querydsl:querydsl-core'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+}
+
+// QueryDSL 설정
+def generated = 'src/main/generated'
+
+// QClass 파일 생성 위치 지정
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// Java SourceSet에 QueryDSL 경로 추가
+sourceSets {
+    main {
+        java {
+            srcDirs += generated
+        }
+    }
+}
+
+// Gradle clean 시 QClass 디렉토리 삭제
+clean {
+    delete file(generated)
 }
 
 tasks.named('test') {

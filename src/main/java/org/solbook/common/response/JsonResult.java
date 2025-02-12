@@ -47,9 +47,9 @@ public class JsonResult<T> {
                 .build();
     }
 
-    public static <T> JsonResult failOf(String resMsg) {
+    public static <T> JsonResult failOf(HttpStatus status, String resMsg) {
         return JsonResult.builder()
-                .resCode(HttpStatus.BAD_REQUEST.value())
+                .resCode(status.value())
                 .resMsg(resMsg)
                 .build();
     }
