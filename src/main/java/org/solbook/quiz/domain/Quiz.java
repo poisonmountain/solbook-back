@@ -1,15 +1,9 @@
 package org.solbook.quiz.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
+import org.solbook.book.domain.Book;
 import org.solbook.common.auditing.BaseEntity;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -27,4 +21,18 @@ public abstract class Quiz extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private QuizType quizType;
+
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
+
+    protected Quiz() {
+    }
+
+    protected Quiz(String question, QuizType quizType) {
+        this.question = question;
+        this.quizType = quizType;
+    }
+
 }
