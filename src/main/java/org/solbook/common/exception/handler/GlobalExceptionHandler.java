@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
         String errorMessage = getErrorMessage(e.getBindingResult());
 
         return JsonResult.failOf(HttpStatus.BAD_REQUEST, errorMessage);
+
     }
 
     /*

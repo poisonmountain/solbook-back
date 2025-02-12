@@ -8,6 +8,7 @@ import org.solbook.quiz.domain.Quiz;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
@@ -36,6 +37,7 @@ public class Book extends BaseEntity {
         quizzes.add(quiz);
         quiz.setBook(this);
     }
+
 
     @Builder
     public Book(String title, String author, String image){

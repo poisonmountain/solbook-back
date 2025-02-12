@@ -15,5 +15,6 @@ public enum ExceptionMessage {
     QUIZ_NOT_FOUND("해당 퀴즈를 찾을 수 없습니다."),
 
     UNKNOWN_QUIZ_TYPE("해당 퀴즈의 타입을 알 수 없습니다.");
+
     private final String text;
 }
