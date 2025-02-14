@@ -26,7 +26,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver  # 드라이버 클래스명 추가
-    url: jdbc:mysql://localhost:3306/solbook?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://3.85.103.13:3306/solbook?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
     username: solbook
     password: 1234
   jpa:
@@ -55,4 +55,4 @@ server:
   reactive:
     session:
       cookie:
-        domain: localhost
+        domain: 3.85.103.13
