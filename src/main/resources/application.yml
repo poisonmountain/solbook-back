@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Back
+  profiles:
+    active: local  # 기본 활성화할 프로필 지정
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  thymeleaf:
+    cache: false
+    suffix: .html
+
+---
+
+# local 프로필 설정
+spring:
+  config:
+    activate:
+      on-profile: local  # 이 부분을 아래로 옮김
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver  # 드라이버 클래스명 추가
+    url: jdbc:mysql://localhost:3306/solbook?serverTimezone=Asia/Seoul
+    username: solbook
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        highlight_sql: true
+        query:
+          in_clause_parameter_padding: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+
+server:
+  reactive:
+    session:
+      cookie:
+        domain: localhost
