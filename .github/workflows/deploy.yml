@@ -24,6 +24,11 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build --exclude-task test
+          
+      - name: Create SSH key file
+        run: |
+              echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ec2_key.pem
+              chmod 600 ec2_key.pem  # 키 파일 권한 변경
 
       - name: Copy JAR to EC2
         run: |
