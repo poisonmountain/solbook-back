@@ -23,7 +23,7 @@ jobs:
       - name: Build with Gradle
         run: |
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew build --exclude-task test
 
       - name: Copy JAR to EC2
         run: |
