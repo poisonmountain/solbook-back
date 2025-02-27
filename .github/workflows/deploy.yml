@@ -27,12 +27,12 @@ jobs:
           
       - name: Create SSH key file
         run: |
-              echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ec2_key.pem
-              chmod 600 ec2_key.pem  # 키 파일 권한 변경
+              echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > solve-book.pem
+              chmod 600 solve-book.pem  
 
       - name: Copy JAR to EC2
         run: |
-          scp -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} \
+          scp -i solve-book.pem \
           build/libs/my-spring-boot-app.jar \
           ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/home/ubuntu/
 
