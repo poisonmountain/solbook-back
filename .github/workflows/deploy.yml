@@ -24,6 +24,10 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build --exclude-task test
+           ls -lh build/libs  # 빌드된 JAR 파일 확인
+          
+      - name: Check Built Files
+        run: ls -lh build/libs/
           
       - name: Create SSH key file
         run: |
