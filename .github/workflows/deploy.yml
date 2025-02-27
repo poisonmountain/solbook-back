@@ -32,13 +32,13 @@ jobs:
 
       - name: Copy JAR to EC2
         run: |
-          scp -i solve-book.pem \
+          scp -o StrictHostKeyChecking=no -i solve-book.pem \
           build/libs/solbook-0.0.1-SNAPSHOT.jar \
           ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/home/ubuntu/
 
       - name: Restart application on EC2
         run: |
-          ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
           
           # MySQL 서비스 시작 및 설정 (EC2 내에서 실행)
           sudo systemctl start mysql
