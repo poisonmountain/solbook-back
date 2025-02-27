@@ -31,18 +31,26 @@ jobs:
           build/libs/my-spring-boot-app.jar \
           ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/home/ubuntu/
 
-      - name: Start MySQL Service
+      - name: Restart application on EC2
         run: |
+          ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          
+          # MySQL 서비스 시작 및 설정 (EC2 내에서 실행)
           sudo systemctl start mysql
           mysql -u root -e "CREATE DATABASE IF NOT EXISTS solbook;"
           mysql -u root -e "CREATE USER IF NOT EXISTS 'solbook'@'localhost' IDENTIFIED BY '1234';"
           mysql -u root -e "GRANT ALL PRIVILEGES ON solbook.* TO 'solbook'@'localhost';"
           mysql -u root -e "FLUSH PRIVILEGES;"
 
-      - name: Restart application on EC2
-        run: |
-          ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          # 기존 애플리케이션 종료
           pkill -f 'java -jar' || true
+          sleep 3
+          
+          # 기존 JAR 파일 삭제 후 새 파일로 교체
+          rm -f /home/ubuntu/my-spring-boot-app.jar
+          
+          # 새로운 애플리케이션 실행
           nohup java -jar /home/ubuntu/my-spring-boot-app.jar > app.log 2>&1 &
+
           EOF
 
