@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.solbook.common.response.JsonResult;
 import org.solbook.quiz.controller.request.MultipleChoiceQuizRequest;
+import org.solbook.quiz.controller.request.QuizSliceRequest;
 import org.solbook.quiz.controller.request.SubjectiveQuizRequest;
 import org.solbook.quiz.controller.response.QuizResponse;
+import org.solbook.quiz.controller.response.QuizSliceResponse;
 import org.solbook.quiz.service.QuizService;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,5 +34,11 @@ public class QuizController {
     public JsonResult<?> getQuiz(@PathVariable("quizId") Long quizId) {
         QuizResponse quizResponse = quizService.getQuiz(quizId);
         return JsonResult.successOf(quizResponse);
+    }
+
+    @GetMapping
+    public JsonResult<?> getQuizSlice(@ModelAttribute QuizSliceRequest quizSliceRequest) {
+        Slice<QuizSliceResponse> quizSliceResponse = quizService.getQuizSliceSearch(quizSliceRequest);
+        return JsonResult.successOf(quizSliceResponse);
     }
 }

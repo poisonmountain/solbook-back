@@ -7,13 +7,19 @@ import org.solbook.common.exception.BookException;
 import org.solbook.common.exception.ExceptionMessage;
 import org.solbook.common.exception.QuizException;
 import org.solbook.quiz.controller.request.MultipleChoiceQuizRequest;
+import org.solbook.quiz.controller.request.QuizSliceRequest;
 import org.solbook.quiz.controller.request.SubjectiveQuizRequest;
 import org.solbook.quiz.controller.response.QuizResponse;
+import org.solbook.quiz.controller.response.QuizSliceResponse;
 import org.solbook.quiz.domain.MultipleChoiceQuiz;
 import org.solbook.quiz.domain.Quiz;
 import org.solbook.quiz.domain.QuizType;
 import org.solbook.quiz.domain.SubjectiveQuiz;
 import org.solbook.quiz.repository.QuizRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,4 +85,19 @@ public class QuizService {
                 new QuizException(ExceptionMessage.QUIZ_NOT_FOUND));
     }
 
+    public Slice<QuizSliceResponse> getQuizSliceSearch(QuizSliceRequest quizSliceRequest) {
+        Pageable pageable = PageRequest.of(quizSliceRequest.page(), quizSliceRequest.size());
+        Slice<Quiz> quizSlice = quizRepository
+                .findByBookIdAndKeyword(quizSliceRequest.bookId(), quizSliceRequest.searchKeyword(),pageable);
+        List<QuizSliceResponse> quizSliceResponseList = quizSlice.getContent().stream()
+                .map(quiz -> {
+                    return QuizSliceResponse.builder()
+                            .id(quiz.getId())
+                            .question(quiz.getQuestion())
+                            .quizType(quiz.getQuizType().getDescription())
+                            .build();
+                })
+                .toList();
+        return new SliceImpl<>(quizSliceResponseList, pageable, quizSlice.hasNext());
+    }
 }
